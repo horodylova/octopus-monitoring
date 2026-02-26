@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: false,
   images: {
     domains: [],
     formats: ['image/avif', 'image/webp'],
