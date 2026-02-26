@@ -1,4 +1,4 @@
- © 2025 Energy Monitoring Dashboard 
+ © 2025 Energy Monitoring Dashboard up
  
  | Developed by Svitlana Horodylova | 
  
