@@ -24,8 +24,7 @@ import CostConsumption from './CostConsumption'
 import Detection from './Detection';
 import Features from './Features';
 
-import Image from 'next/image';
-import logo from '@/app/assets/logo.svg';
+import Logo from '@/app/assets/logo.svg';
 
 
 
@@ -107,7 +106,7 @@ export default function Dashboard() {
             <Button svgIcon={menuIcon} fillMode="clear" themeColor="light" title='Toggle Drawer' onClick={handleDrawerState} />
             <a href="#" className="k-d-none k-d-md-flex">
               
-<Image src={logo} alt="Logo" width={200} height={50} />
+<Logo width={200} height={50} />
             </a>
           
           </AppBarSection>
