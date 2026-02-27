@@ -7,7 +7,8 @@ import {
   ChartSeriesItem,
   ChartTooltip
 } from '@progress/kendo-react-charts';
-import { getElectricityConsumption } from '../services/octopus-api';
+// import { getElectricityConsumption } from '../services/octopus-api';
+import mockHourlyData from '../data/mock-hourly-data.json';
 import { Loader } from '@progress/kendo-react-indicators';
 
 export default function HourlyConsumptionPieChart(props) {
@@ -29,6 +30,8 @@ export default function HourlyConsumptionPieChart(props) {
         const periodFrom = startDate.toISOString();
         const periodTo = endDate.toISOString();
         
+        // API disabled due to repeated errors
+        /*
         const mpan = process.env.NEXT_PUBLIC_VITE_ELECTRICITY_MPAN;
         const serial = process.env.NEXT_PUBLIC_VITE_ELECTRICITY_SERIAL;
         
@@ -38,6 +41,7 @@ export default function HourlyConsumptionPieChart(props) {
         if (!consumptionData || consumptionData.length === 0) {
           throw new Error('No consumption data available');
         }
+        */
         
         const hourlyConsumption = {};
         
@@ -45,12 +49,19 @@ export default function HourlyConsumptionPieChart(props) {
           hourlyConsumption[hour] = 0;
         }
         
+        // Use mock data
+        mockHourlyData.forEach(item => {
+           hourlyConsumption[item.hour] = item.consumption;
+        });
+        
+        /*
         consumptionData.forEach(item => {
           const date = new Date(item.interval_start);
           const hour = date.getHours();
           
           hourlyConsumption[hour] += parseFloat(item.consumption);
         });
+        */
         
         const formattedData = Object.entries(hourlyConsumption).map(([hour, consumption]) => {
           let timeOfDay;

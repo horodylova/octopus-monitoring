@@ -84,6 +84,13 @@ export default function Usage({ onRefresh }) {
               >
                 2025
               </Button>
+              <Button
+                title="2026"
+                className={selectedYear === 2026 ? "k-selected" : ""}
+                onClick={() => handleYearChange(2026)}
+              >
+                2026
+              </Button>
             </ButtonGroup>
           </div>
 

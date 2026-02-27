@@ -1,0 +1,70 @@
+[
+  {
+    "year": 2023,
+    "data": [
+      { "month": 0, "consumption": 350 },
+      { "month": 1, "consumption": 320 },
+      { "month": 2, "consumption": 280 },
+      { "month": 3, "consumption": 250 },
+      { "month": 4, "consumption": 200 },
+      { "month": 5, "consumption": 180 },
+      { "month": 6, "consumption": 160 },
+      { "month": 7, "consumption": 150 },
+      { "month": 8, "consumption": 170 },
+      { "month": 9, "consumption": 220 },
+      { "month": 10, "consumption": 290 },
+      { "month": 11, "consumption": 340 }
+    ]
+  },
+  {
+    "year": 2024,
+    "data": [
+      { "month": 0, "consumption": 340 },
+      { "month": 1, "consumption": 310 },
+      { "month": 2, "consumption": 270 },
+      { "month": 3, "consumption": 240 },
+      { "month": 4, "consumption": 190 },
+      { "month": 5, "consumption": 170 },
+      { "month": 6, "consumption": 150 },
+      { "month": 7, "consumption": 140 },
+      { "month": 8, "consumption": 160 },
+      { "month": 9, "consumption": 210 },
+      { "month": 10, "consumption": 280 },
+      { "month": 11, "consumption": 330 }
+    ]
+  },
+  {
+    "year": 2025,
+    "data": [
+      { "month": 0, "consumption": 330 },
+      { "month": 1, "consumption": 300 },
+      { "month": 2, "consumption": 260 },
+      { "month": 3, "consumption": 230 },
+      { "month": 4, "consumption": 180 },
+      { "month": 5, "consumption": 160 },
+      { "month": 6, "consumption": 140 },
+      { "month": 7, "consumption": 130 },
+      { "month": 8, "consumption": 150 },
+      { "month": 9, "consumption": 200 },
+      { "month": 10, "consumption": 270 },
+      { "month": 11, "consumption": 320 }
+    ]
+  },
+  {
+    "year": 2026,
+    "data": [
+      { "month": 0, "consumption": 320 },
+      { "month": 1, "consumption": 290 },
+      { "month": 2, "consumption": 260 },
+      { "month": 3, "consumption": 230 },
+      { "month": 4, "consumption": 180 },
+      { "month": 5, "consumption": 160 },
+      { "month": 6, "consumption": 140 },
+      { "month": 7, "consumption": 130 },
+      { "month": 8, "consumption": 150 },
+      { "month": 9, "consumption": 200 },
+      { "month": 10, "consumption": 270 },
+      { "month": 11, "consumption": 320 }
+    ]
+  }
+]

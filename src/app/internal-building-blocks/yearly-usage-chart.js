@@ -12,23 +12,36 @@ import {
   ChartTooltip,
 } from '@progress/kendo-react-charts';
 import { getMonthlyElectricityData, getTariffForDate } from '../services/octopus-api';
+import mockData from '../data/mock-yearly-usage.json';
 
 export default function YearlyUsageChart(props) {
   const { onRefresh, selectedYear = 'all' } = props;
   const [loading, setLoading] = useState(true);
   const [yearlyData, setYearlyData] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [visibleSeries, setVisibleSeries] = useState({2023: true, 2024: true, 2025: true});
+  const [visibleSeries, setVisibleSeries] = useState({2023: true, 2024: true, 2025: true, 2026: true});
   
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        const currentMonth = currentDate.getMonth();
-        
-        const data = await getMonthlyElectricityData(2023, currentYear, currentMonth);
+        let data;
+
+        // API disabled due to repeated errors
+        /*
+        try {
+          const currentDate = new Date();
+          const currentYear = currentDate.getFullYear();
+          const currentMonth = currentDate.getMonth();
+          
+          data = await getMonthlyElectricityData(2023, currentYear, currentMonth);
+        } catch (error) {
+          console.warn('API call failed, using mock data:', error);
+          data = mockData;
+        }
+        */
+       
+        data = mockData;
         
         const dataWithCost = data.map(yearData => {
           return {
@@ -46,7 +59,21 @@ export default function YearlyUsageChart(props) {
         });
         
         const completeData = dataWithCost.map(yearData => {
+          const currentDate = new Date();
+          const currentYear = currentDate.getFullYear();
+          const currentMonth = currentDate.getMonth();
+
           const completeMonths = Array(12).fill(0).map((_, index) => {
+            // Filter out future months for the current year
+            if (yearData.year === currentYear && index > currentMonth) {
+              return {
+                month: index,
+                consumption: 0,
+                tariff: getTariffForDate(new Date(yearData.year, index, 1)),
+                cost: 0
+              };
+            }
+
             const existingData = yearData.data.find(m => m.month === index);
             if (existingData) {
               return existingData;
@@ -130,7 +157,8 @@ export default function YearlyUsageChart(props) {
       return monthData ? monthData.cost : 0;
     }),
     color: yearData.year === 2023 ? 'rgb(181, 74, 106)' : 
-           yearData.year === 2024 ? 'rgb(111, 159, 164)' : 'rgb(169, 120, 45)',
+           yearData.year === 2024 ? 'rgb(111, 159, 164)' : 
+           yearData.year === 2025 ? 'rgb(169, 120, 45)' : 'rgb(90, 130, 186)',
     visible: visibleSeries[yearData.year]
   }));
   

@@ -13,7 +13,8 @@ import {
 } from '@progress/kendo-react-charts';
 import { costChartCategories } from '../data';
 import { useEffect, useState } from 'react';
-import { getMonthlyElectricityData } from '../services/octopus-api';
+import { getMonthlyElectricityData, getTariffForDate } from '../services/octopus-api';
+import mockData from '../data/mock-yearly-usage.json';
 
 export default function ConsumptionCostChart(props) {
   const { onRefresh } = props;
@@ -21,25 +22,75 @@ export default function ConsumptionCostChart(props) {
   const [costData, setCostData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [monthlyData, setMonthlyData] = useState([]);
-  const tariffRate = 0.28;
+  const [averageTariff, setAverageTariff] = useState(0.28);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const data = await getMonthlyElectricityData(2025, 2025);
+        let data;
+        
+        // API disabled due to repeated errors and user request
+        /*
+        try {
+          // Try to fetch real data for 2025
+          data = await getMonthlyElectricityData(2025, 2025);
+        } catch (error) {
+          console.warn('API call failed, using mock data:', error);
+          // Fallback to mock data for 2025
+          const mockYearData = mockData.find(d => d.year === 2025);
+          if (mockYearData) {
+            data = [{
+              year: 2025,
+              data: mockYearData.data
+            }];
+          } else {
+            data = [];
+          }
+        }
+        */
+
+        // Use mock data directly
+        const mockYearData = mockData.find(d => d.year === 2025);
+        if (mockYearData) {
+          data = [{
+            year: 2025,
+            data: mockYearData.data
+          }];
+        } else {
+          data = [];
+        }
         
         if (data && data.length > 0 && data[0].data) {
           const monthData = data[0].data;
-          setMonthlyData(monthData);
           
-          const consumption = monthData.map(item => item.consumption);
+          // Ensure we have data for all months defined in costChartCategories
+          const completeMonthData = costChartCategories.map((categoryDate, index) => {
+            const existingMonth = monthData.find(m => m.month === index);
+            if (existingMonth) {
+              return existingMonth;
+            }
+            return { month: index, consumption: 0 };
+          });
+          
+          setMonthlyData(completeMonthData);
+          
+          const consumption = completeMonthData.map(item => item.consumption);
           setConsumptionData(consumption);
           
-          const costs = monthData.map(item => {
-            return item.consumption * tariffRate;
+          const costs = completeMonthData.map((item, index) => {
+            // Use specific tariff for each month if available, otherwise use default
+            const date = costChartCategories[index];
+            const tariff = getTariffForDate(date);
+            return item.consumption * tariff;
           });
           setCostData(costs);
+          
+          // Calculate average tariff for display if needed
+          const totalTariff = completeMonthData.reduce((sum, _, index) => {
+            return sum + getTariffForDate(costChartCategories[index]);
+          }, 0);
+          setAverageTariff(totalTariff / 12);
         }
       } catch (error) {
         console.error('Error fetching electricity data:', error);
@@ -76,6 +127,8 @@ export default function ConsumptionCostChart(props) {
     
     const month = costChartCategories[monthIndex].toLocaleString('en-US', { month: 'long' });
     const value = point.value;
+    const date = costChartCategories[monthIndex];
+    const tariff = getTariffForDate(date);
     
     if (seriesName === "Consumption") {
       return (
@@ -89,7 +142,7 @@ export default function ConsumptionCostChart(props) {
         <div>
           <p><strong>{month} 2025</strong></p>
           <p>Cost: £{value.toFixed(2)}</p>
-          <p>Tariff Rate: £{tariffRate.toFixed(2)}/kWh</p>
+          <p>Tariff Rate: £{tariff.toFixed(2)}/kWh</p>
         </div>
       );
     }

@@ -23,10 +23,18 @@ export default function HourlyConsumptionHeatmap(props) {
       try {
         setIsLoading(true);
         
+        // API disabled due to repeated errors
+        /*
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - 7);
         
+        const hours = Array.from({ length: 24 }, (_, i) => i);
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        
+        const mockData = [];
+        */
+       
         const hours = Array.from({ length: 24 }, (_, i) => i);
         const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         
